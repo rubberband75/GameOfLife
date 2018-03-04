@@ -270,3 +270,7 @@ function setStartPattern() {
     }
 
 }
+
+document.addEventListener('touchend', function() {
+    randomize();
+})

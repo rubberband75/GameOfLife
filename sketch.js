@@ -222,3 +222,9 @@ document.addEventListener("mousedown", function(e) {
     let crow = floor(e.clientY/cellWidth)
     grid[crow][ccol] = int(!grid[crow][ccol])
 });
+
+document.addEventListener('touchend', function() {
+    running = true;
+    drawNewCanvas();
+    draw();
+})
