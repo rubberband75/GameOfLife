@@ -60,7 +60,7 @@
       cursor: pointer;
     }
 
-    #resetButton {
+    .gameButton {
       display: flex;
       justify-content: space-around;
       background-color: rgba(79, 127, 167, 0.75);
@@ -71,7 +71,7 @@
       -webkit-transition: .2s;
       transition: background-color .2s;
     }
-    #resetButton:hover {
+    .gameButton:hover {
       background-color: rgba(79, 127, 167, 0.9);
     }
 
@@ -87,19 +87,19 @@
     </div>
 
     <div>
-      <div id='resetButton' onclick="clearGrid()">Clear</div>
+      <div class="gameButton" id='clearButton' onclick="clearGrid()">Clear</div>
     </div>
 
     <div>
-      <div id='resetButton' onclick="randomize()">Randomize</div>
+      <div class="gameButton" id='randomizeButton' onclick="randomize()">Randomize</div>
     </div>
 
     <div>
-      <div id='resetButton' onclick="toggleGame()">Pause</div>
+      <div class="gameButton" id='toggleButton' onclick="toggleGame()">Pause</div>
     </div>
 
     <div>
-      <div id='resetButton' onclick="stepGeneration()">Step</div>
+      <div class="gameButton" id='stepButton' onclick="stepGeneration()">Step</div>
     </div>
 
   </div>

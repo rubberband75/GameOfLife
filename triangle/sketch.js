@@ -170,56 +170,56 @@ function countNeighbors(row, col){
     let sum = 0;
 
     if(row > 0 && col > 0){
-        sum += grid[row-1][col-1]
+        sum += grid[row-1][col-1];
     }
     if(row > 0){
-        sum += grid[row-1][col]
+        sum += grid[row-1][col];
     }
     if(row > 0 && col < grid[0].length - 2){
-        sum += grid[row-1][col+1]
+        sum += grid[row-1][col+1];
     }
 
 
     if(col > 0){
-        sum += grid[row][col-1]
+        sum += grid[row][col-1];
     }
     if(col < grid[0].length - 2){
-        sum += grid[row][col+1]
+        sum += grid[row][col+1];
     }
 
 
     if(row < grid.length - 2 && col > 0){
-        sum += grid[row+1][col-1]
+        sum += grid[row+1][col-1];
     }
     if(row < grid.length - 2){
-        sum += grid[row+1][col]
+        sum += grid[row+1][col];
     }
     if(row < grid.length - 2 && col < grid[0].length - 2){
-        sum += grid[row+1][col+1]
+        sum += grid[row+1][col+1];
     }
 
 
     if(col > 1){
-        sum += grid[row][col-2]
+        sum += grid[row][col-2];
     }
     if(col < grid[0].length - 3){
-        sum += grid[row][col+2]
+        sum += grid[row][col+2];
     }
 
 
     if(dir){ // pointed down
         if(row > 0 && col > 1){
-            sum += grid[row-1][col-2]
+            sum += grid[row-1][col-2];
         }
         if(row > 0 && col < grid[0].length - 3){
-            sum += grid[row-1][col+2]
+            sum += grid[row-1][col+2];
         }
     } else { // pointed up
         if(row < grid.length - 2 && col > 1){
-            sum += grid[row+1][col-2]
+            sum += grid[row+1][col-2];
         }
         if(row < grid.length - 2 && col < grid[0].length - 3){
-            sum += grid[row+1][col+2]
+            sum += grid[row+1][col+2];
         }
     }
 
@@ -261,10 +261,10 @@ function setStartPattern() {
     ];
 
     for (let i = 0; i < pattern.length; i++) {
-        let r = (grid.length / 2) + pattern[i][0]
-        let c = ((grid[0].length - 1) / 2) + pattern[i][1]
+        let r = (grid.length / 2) + pattern[i][0];
+        let c = ((grid[0].length - 1) / 2) + pattern[i][1];
 
-        console.log([r, c])
+        console.log([r, c]);
 
         grid[r][c] = 1;
     }
@@ -272,10 +272,12 @@ function setStartPattern() {
 }
 
 document.addEventListener('touchend', function() {
-    randomize();
+    //randomize();
+	running = !running;
 })
 
 
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
     sideLength = 90;
 }
+

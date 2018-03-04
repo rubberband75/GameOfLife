@@ -22,7 +22,7 @@ function setup() {
 
 function draw() {
     if (running) {
-        getNextGeneration()
+        getNextGeneration();
         drawUpdate = true;
     }
 
@@ -33,43 +33,43 @@ function draw() {
 }
 
 function drawHexagon(x, y, r, inFill = false, fillColor = color(255)) {
-    push()
+    push();
     translate(x, y);
 
-    stroke(32)
+    stroke(32);
     strokeWeight(gridStrokeWeight);
 
 
     if (inFill) {
-        push()
-        noStroke()
-        fill(fillColor)
+        push();
+        noStroke();
+        fill(fillColor);
         quad(0, r,
             -tHeight * r, r / 2,
             -tHeight * r, -r / 2,
-            0, -r)
+            0, -r);
 
         quad(0, r,
             tHeight * r, r / 2,
             tHeight * r, -r / 2,
-            0, -r)
-        strokeWeight(2)
+            0, -r);
+        strokeWeight(2);
         stroke(fillColor);
-        line(0, r, 0, -r)
-        pop()
+        line(0, r, 0, -r);
+        pop();
     }
 
-    line(0, r, -tHeight * r, r / 2)
+    line(0, r, -tHeight * r, r / 2);
     line(-tHeight * r, r / 2, -tHeight * r, -r / 2)
-    line(-tHeight * r, -r / 2, 0, -r)
-    line(0, -r, tHeight * r, -r / 2)
+    line(-tHeight * r, -r / 2, 0, -r);
+    line(0, -r, tHeight * r, -r / 2);
     line(tHeight * r, -r / 2, tHeight * r, r / 2)
-    line(tHeight * r, r / 2, 0, r)
+    line(tHeight * r, r / 2, 0, r);
 
     pop()
 }
 
-function drawHexCell(x, y, inFill = false, fillColor = color(255)) {
+function drawHexCell(x, y, inFill=false, fillColor = color(255)) {
     drawHexagon(x * tHeight * sideLength, -y * (3 / 2.0) * sideLength, sideLength, inFill, fillColor);
 }
 

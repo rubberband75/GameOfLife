@@ -218,13 +218,32 @@ document.addEventListener("keydown", function(event) {
 
 document.addEventListener("mousedown", function(e) {
     let cellWidth = canvasSize / resolution;
-    let ccol = floor(e.clientX/cellWidth)
-    let crow = floor(e.clientY/cellWidth)
-    grid[crow][ccol] = int(!grid[crow][ccol])
+    let ccol = floor(e.clientX/cellWidth);
+    let crow = floor(e.clientY/cellWidth);
+    grid[crow][ccol] = int(!grid[crow][ccol]);
 });
 
-document.addEventListener('touchend', function() {
-    running = true;
-    drawNewCanvas();
-    draw();
-})
+document.addEventListener('touchend', function(e) {
+    let cellWidth = canvasSize / resolution;
+    let ccol = floor(e.touches[0].clientX/cellWidth);
+    let crow = floor(e.touches[0].clientY/cellWidth);
+    grid[crow][ccol] = int(!grid[crow][ccol]);
+	//alert(ccol +","+crow);
+});
+
+document.getElementById('clearButton').addEventListener('touchstart', function(){
+	clearGrid();
+});
+
+document.getElementById('randomizeButton').addEventListener('touchstart', function(){
+	randomize();
+});
+
+document.getElementById('toggleButton').addEventListener('touchstart', function(){
+	toggleGame();
+});
+
+document.getElementById('stepButton').addEventListener('touchstart', function(){
+	stepGeneration();
+});
+
