@@ -274,3 +274,8 @@ function setStartPattern() {
 document.addEventListener('touchend', function() {
     randomize();
 })
+
+
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    sideLength = 90;
+}

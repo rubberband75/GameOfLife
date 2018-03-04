@@ -295,3 +295,7 @@ document.addEventListener('touchend', function() {
     running = true;
     randomize();
 })
+
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    sideLength = 30;
+}
