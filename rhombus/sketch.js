@@ -175,8 +175,8 @@ function countNeighbors(row, col) {
         sum += getState(row + 1, col + 1);
         sum += getState(row + 1, col + 3);
 
-        sum += getState(row + 0, col - 4);
-        sum += getState(row + 0, col + 4);
+        // sum += getState(row + 0, col - 4);
+        // sum += getState(row + 0, col + 4);
     }
 
     if(grid[row][col].dir == 2){
@@ -190,8 +190,8 @@ function countNeighbors(row, col) {
         sum += getState(row + 1, col - 1);
         sum += getState(row + 2, col + 0);
         
-        sum += getState(row - 2, col - 2);
-        sum += getState(row + 2, col + 2);
+        // sum += getState(row - 2, col - 2);
+        // sum += getState(row + 2, col + 2);
     }
 
     if(grid[row][col].dir == 3){
@@ -205,8 +205,8 @@ function countNeighbors(row, col) {
         sum += getState(row + 0, col + 2);
         sum += getState(row - 1, col + 3);
         
-        sum += getState(row + 2, col - 2);
-        sum += getState(row - 2, col + 2);
+        // sum += getState(row + 2, col - 2);
+        // sum += getState(row - 2, col + 2);
     }
 
     return sum;
@@ -232,7 +232,7 @@ function getNextGeneration() {
 
                 if (alive == 0 && (neighbors >= 3 && neighbors <= 3)) {
                     nextGrid[row][col].state = 1;
-                } else if (alive == 1 && (neighbors < 3 || neighbors > 4)) {
+                } else if (alive == 1 && (neighbors < 2 || neighbors > 3)) {
                     nextGrid[row][col].state = 0;
                 } else {
                     nextGrid[row][col].state = grid[row][col].state;
