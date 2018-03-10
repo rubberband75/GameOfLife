@@ -15,31 +15,60 @@
     <body>
         <h1>Color Average</h1>
 
-        <input id='color-1' type="color" value="#ff0000"> +
-        <input id='color-2' type="color" value="#00ff00"> =
+        <input id="checkBox0" type="checkbox" style="width: unset" checked>
+        <input id='color-0' type="color" value="#ff0000"> +
+        
+        <input id="checkBox1" type="checkbox" style="width: unset" checked>
+        <input id='color-1' type="color" value="#00ff00"> +
+        
+        <input id="checkBox2" type="checkbox" style="width: unset" >
+        <input id='color-2' type="color" value="#0000ff"> =
+        
         <input id='color-3' type="color">
+        
         <hr>
+        <div id='c0'>-</div>
         <div id='c1'>-</div>
         <div id='c2'>-</div>
         <div id='c3'>-</div>
 
         <script>
+            let colorPicker0 = document.getElementById('color-0')
             let colorPicker1 = document.getElementById('color-1')
             let colorPicker2 = document.getElementById('color-2')
             let colorPicker3 = document.getElementById('color-3')
+            let check0 = document.getElementById('checkBox0')
+            let check1 = document.getElementById('checkBox1')
+            let check2 = document.getElementById('checkBox2')
+            let c0 = document.getElementById('c0')
             let c1 = document.getElementById('c1')
             let c2 = document.getElementById('c2')
             let c3 = document.getElementById('c3')
+            let color0;
             let color1;
             let color2;
             let color3;
 
             updateColors();
 
+            colorPicker0.addEventListener("input", function () {
+                updateColors()
+            });
             colorPicker1.addEventListener("input", function () {
                 updateColors()
             });
             colorPicker2.addEventListener("input", function () {
+                updateColors()
+            });
+
+
+            check0.addEventListener("change", function () {
+                updateColors()
+            });
+            check1.addEventListener("change", function () {
+                updateColors()
+            });
+            check2.addEventListener("change", function () {
                 updateColors()
             });
 
@@ -82,7 +111,7 @@
 
 
             function sinx(x, n = 2*Math.PI) {
-                x = x % n;
+                x = (x+n) % n;
                 if (x < n / 6) {
                     return x / (n / 6);
 
@@ -99,26 +128,31 @@
 
 
             function updateColors(){
-                // colorPicker3.value = colorPicker1.value
 
+                color0 = getRGB(colorPicker0.value)
                 color1 = getRGB(colorPicker1.value)
                 color2 = getRGB(colorPicker2.value)
-                // color3 = color1;
 
+                let a0 = getAngle(color0);
                 let a1 = getAngle(color1);
                 let a2 = getAngle(color2);
+
+                let colorsChecked = [];
+                if(check0.checked) colorsChecked.push(a0);
+                if(check1.checked) colorsChecked.push(a1);
+                if(check2.checked) colorsChecked.push(a2);
+
                 
-                let a3 = angleAverage([a1, a2]);
+                let a3 = angleAverage(colorsChecked);
                 let r3 = 255 * sinx(a3 + (2 * Math.PI / 3));
                 let g3 = 255 * sinx(a3);
                 let b3 = 255 * sinx(a3 + (4 * Math.PI / 3));
                 color3 = {r: Math.round(r3), g: Math.round(g3), b: Math.round(b3)};
                 colorPicker3.value = getHex(color3)
 
-
-
-                c1.innerText = JSON.stringify(color1)
-                c2.innerText = JSON.stringify(color2)
+                c0.innerText = getHex(color0)
+                c1.innerText = getHex(color1)
+                c2.innerText = getHex(color2)
                 c3.innerText = getHex(color3)
             }
 
