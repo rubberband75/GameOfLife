@@ -76,14 +76,18 @@ setInterval(function () {
 }, 100);
 
 
-function GetAngleAverage(a, b) {
-    a = a % 360;
-    b = b % 360;
 
-    let sum = a + b;
-    if (sum > 360 && sum < 540)
-    {
-        sum = sum % 180;
+function angleAverage(angles=[]){
+    let x = 0;
+    let y = 0;
+    for(let i = 0; i < angles.length; i++){
+        x += Math.cos(angles[i]);
+        y += Math.sin(angles[i]);
     }
-    return sum / 2;
+    if(angles.length){
+        x = x/angles.length;
+        y = y/angles.length;
+    }
+
+    return Math.atan2(y, x);
 }
