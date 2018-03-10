@@ -112,7 +112,7 @@
                 let r3 = 255 * sinx(a3 + (2 * Math.PI / 3));
                 let g3 = 255 * sinx(a3);
                 let b3 = 255 * sinx(a3 + (4 * Math.PI / 3));
-                color3 = {r: r3, g: g3, b: b3};
+                color3 = {r: Math.round(r3), g: Math.round(g3), b: Math.round(b3)};
                 colorPicker3.value = getHex(color3)
 
 
