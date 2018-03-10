@@ -27,10 +27,11 @@
         <input id='color-3' type="color">
         
         <hr>
-        <div id='c0'>-</div>
-        <div id='c1'>-</div>
-        <div id='c2'>-</div>
-        <div id='c3'>-</div>
+        <div id='c0'></div>
+        <div id='c1'></div>
+        <div id='c2'></div>
+        <div>-------</div>
+        <div id='c3'></div>
 
         <script>
             let colorPicker0 = document.getElementById('color-0')
@@ -126,6 +127,12 @@
                 }
             }
 
+            function getColor(angle){
+                let r = Math.round(255 * sinx(angle + (2 * Math.PI / 3)));
+                let g = Math.round(255 * sinx(angle));
+                let b = Math.round(255 * sinx(angle + (4 * Math.PI / 3)));
+                return {r: r, g: g, b: b};
+            }
 
             function updateColors(){
 
@@ -144,15 +151,12 @@
 
                 
                 let a3 = angleAverage(colorsChecked);
-                let r3 = 255 * sinx(a3 + (2 * Math.PI / 3));
-                let g3 = 255 * sinx(a3);
-                let b3 = 255 * sinx(a3 + (4 * Math.PI / 3));
-                color3 = {r: Math.round(r3), g: Math.round(g3), b: Math.round(b3)};
+                color3 = getColor(a3)
                 colorPicker3.value = getHex(color3)
 
-                c0.innerText = getHex(color0)
-                c1.innerText = getHex(color1)
-                c2.innerText = getHex(color2)
+                c0.innerText = check0.checked ? getHex(color0) : ""
+                c1.innerText = check1.checked ? getHex(color1) : ""
+                c2.innerText = check2.checked ? getHex(color2) : ""
                 c3.innerText = getHex(color3)
             }
 
