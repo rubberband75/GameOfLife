@@ -43,7 +43,8 @@ function initializeGrid() {
         for (let col = 0; col < grid[0].length; col++) {
 
             let cellDir = getDirection(row - rowOffset, col - colOffset);
-            if (cellDir) { grid[row][col] = { state: 0, dir: cellDir }; }
+            let fillColor = getColor(cellDir);
+            if (cellDir) { grid[row][col] = { state: 0, dir: cellDir, color: fillColor }; }
 
         }
     }
@@ -69,6 +70,13 @@ function getDirection(row, col) {
     }
 
     return 0;
+}
+
+function getColor(dir){
+    if(dir == 1) return color(255, 0, 0);
+    if(dir == 2) return color(0, 255, 0);
+    if(dir == 3) return color(0, 0, 255);
+    return color(255);
 }
 
 function drawRhombus(row, col) {
@@ -109,7 +117,7 @@ function drawRhombus(row, col) {
     }
 }
 
-function drawCell(row, col, live = false) {
+function drawCell(row, col, live = false, fillColor=color(255)) {
     let x = col * sideLength;
     let y = row * sideLength;
     let r = sideLength;
@@ -118,7 +126,7 @@ function drawCell(row, col, live = false) {
     strokeWeight(2);
     noFill();
 
-    if (live) fill(255);
+    if (live) fill(fillColor);
     drawRhombus(row, col);
 }
 
@@ -131,7 +139,7 @@ function drawGrid() {
     for (let row = 0; row < grid.length; row++) {
         for (let col = 0; col < grid[0].length; col++) {
             if (getDirection(row - rowOffset, col - colOffset)) {
-                drawCell(row - rowOffset, col - colOffset, grid[row][col].state);
+                drawCell(row - rowOffset, col - colOffset, grid[row][col].state, grid[row][col].color);
             }
         }
     }
@@ -219,7 +227,8 @@ function getNextGeneration() {
         for (let col = 0; col < grid[0].length; col++) {
 
             let cellDir = getDirection(row - rowOffset, col - colOffset);
-            if (cellDir) { nextGrid[row][col] = { state: 0, dir: cellDir }; }
+            let fillColor = getColor(cellDir);
+            if (cellDir) { nextGrid[row][col] = { state: 0, dir: cellDir, color: fillColor }; }
 
         }
     }
