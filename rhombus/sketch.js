@@ -44,6 +44,7 @@ function initializeGrid() {
 
             let cellDir = getDirection(row - rowOffset, col - colOffset);
             let fillColor = getColor(cellDir);
+            // let fillColor = getRandomColor();
             if (cellDir) { grid[row][col] = { state: 0, dir: cellDir, color: fillColor }; }
 
         }
@@ -279,7 +280,7 @@ function getNextGeneration() {
         for (let col = 0; col < grid[0].length; col++) {
 
             let cellDir = getDirection(row - rowOffset, col - colOffset);
-            let fillColor = getColor(cellDir);
+            let fillColor = grid[row][col] ? grid[row][col].color : color(255);
             if (cellDir) { nextGrid[row][col] = { state: 0, dir: cellDir, color: fillColor }; }
 
         }
@@ -412,4 +413,8 @@ function getColorFromAngle(angle) {
     let g = Math.round(255 * sinx(angle));
     let b = Math.round(255 * sinx(angle + (4 * Math.PI / 3)));
     return color(r, g, b);
+}
+
+function getRandomColor(){
+    return getColorFromAngle(Math.random() * 2*Math.PI);
 }
