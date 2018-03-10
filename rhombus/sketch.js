@@ -72,10 +72,10 @@ function getDirection(row, col) {
     return 0;
 }
 
-function getColor(dir){
-    if(dir == 1) return color(255, 0, 0);
-    if(dir == 2) return color(0, 255, 0);
-    if(dir == 3) return color(0, 0, 255);
+function getColor(dir) {
+    if (dir == 1) return color(255, 0, 0);
+    if (dir == 2) return color(0, 255, 0);
+    if (dir == 3) return color(0, 0, 255);
     return color(255);
 }
 
@@ -117,7 +117,7 @@ function drawRhombus(row, col) {
     }
 }
 
-function drawCell(row, col, live = false, fillColor=color(255)) {
+function drawCell(row, col, live = false, fillColor = color(255)) {
     let x = col * sideLength;
     let y = row * sideLength;
     let r = sideLength;
@@ -161,7 +161,7 @@ function randomize() {
 
 function getState(row, col) {
     if (row >= 0 && row < grid.length && col >= 0 && col < grid[0].length) {
-        if(grid[row][col]){
+        if (grid[row][col]) {
             return grid[row][col].state;
         }
     }
@@ -169,10 +169,10 @@ function getState(row, col) {
 }
 
 function countNeighbors(row, col) {
-    if(grid[row][col] == null) return 0;
-    
+    if (grid[row][col] == null) return 0;
+
     sum = 0;
-    if(grid[row][col].dir == 1){
+    if (grid[row][col].dir == 1) {
         sum += getState(row - 1, col - 3);
         sum += getState(row - 1, col - 1);
         sum += getState(row - 1, col + 1);
@@ -187,7 +187,7 @@ function countNeighbors(row, col) {
         // sum += getState(row + 0, col + 4);
     }
 
-    if(grid[row][col].dir == 2){
+    if (grid[row][col].dir == 2) {
         sum += getState(row - 2, col + 0);
         sum += getState(row - 1, col + 1);
         sum += getState(row + 0, col + 2);
@@ -197,12 +197,12 @@ function countNeighbors(row, col) {
         sum += getState(row + 0, col - 2);
         sum += getState(row + 1, col - 1);
         sum += getState(row + 2, col + 0);
-        
+
         // sum += getState(row - 2, col - 2);
         // sum += getState(row + 2, col + 2);
     }
 
-    if(grid[row][col].dir == 3){
+    if (grid[row][col].dir == 3) {
         sum += getState(row + 1, col - 3);
         sum += getState(row + 0, col - 2);
         sum += getState(row - 1, col - 1);
@@ -212,9 +212,61 @@ function countNeighbors(row, col) {
         sum += getState(row + 1, col + 1);
         sum += getState(row + 0, col + 2);
         sum += getState(row - 1, col + 3);
-        
+
         // sum += getState(row + 2, col - 2);
         // sum += getState(row - 2, col + 2);
+    }
+
+    return sum;
+}
+
+function getNeighbors(row, col) {
+    if (grid[row][col] == null) return [];
+
+    sum = [];
+    if (grid[row][col].dir == 1) {
+        if (getState(row - 1, col - 3)) sum.push(grid[row - 1][col - 3]);
+        if (getState(row - 1, col - 1)) sum.push(grid[row - 1][col - 1]);
+        if (getState(row - 1, col + 1)) sum.push(grid[row - 1][col + 1]);
+        if (getState(row - 1, col + 3)) sum.push(grid[row - 1][col + 3]);
+
+        if (getState(row + 1, col - 3)) sum.push(grid[row + 1][col - 3]);
+        if (getState(row + 1, col - 1)) sum.push(grid[row + 1][col - 1]);
+        if (getState(row + 1, col + 1)) sum.push(grid[row + 1][col + 1]);
+        if (getState(row + 1, col + 3)) sum.push(grid[row + 1][col + 3]);
+
+        // if(getState(row + 0, col - 4) sum.push(grid[row + 0][col - 4]);
+        // if(getState(row + 0, col + 4) sum.push(grid[row + 0][col + 4]);
+    }
+
+    if (grid[row][col].dir == 2) {
+        if (getState(row - 2, col + 0)) sum.push(grid[row - 2][col + 0]);
+        if (getState(row - 1, col + 1)) sum.push(grid[row - 1][col + 1]);
+        if (getState(row + 0, col + 2)) sum.push(grid[row + 0][col + 2]);
+        if (getState(row + 1, col + 3)) sum.push(grid[row + 1][col + 3]);
+
+        if (getState(row - 1, col - 3)) sum.push(grid[row - 1][col - 3]);
+        if (getState(row + 0, col - 2)) sum.push(grid[row + 0][col - 2]);
+        if (getState(row + 1, col - 1)) sum.push(grid[row + 1][col - 1]);
+        if (getState(row + 2, col + 0)) sum.push(grid[row + 2][col + 0]);
+
+        // if(getState(row - 2, col - 2)) sum.push(grid[row - 2][col - 2]);
+        // if(getState(row + 2, col + 2)) sum.push(grid[row + 2][col + 2]);
+    }
+
+    if (grid[row][col].dir == 3) {
+        if (getState(row + 1, col - 3)) sum.push(grid[row + 1][col - 3]);
+        if (getState(row + 0, col - 2)) sum.push(grid[row + 0][col - 2]);
+        if (getState(row - 1, col - 1)) sum.push(grid[row - 1][col - 1]);
+        if (getState(row - 2, col + 0)) sum.push(grid[row - 2][col + 0]);
+
+        if (getState(row + 2, col + 0)) sum.push(grid[row + 2][col + 0]);
+        if (getState(row + 1, col + 1)) sum.push(grid[row + 1][col + 1]);
+        if (getState(row + 0, col + 2)) sum.push(grid[row + 0][col + 2]);
+        if (getState(row - 1, col + 3)) sum.push(grid[row - 1][col + 3]);
+
+        // if(getState(row + 2, col - 2)) sum.push(grid[row + 2][col - 2]);
+        // if(getState(row - 2, col + 2)) sum.push(grid[row - 2][col + 2]);
     }
 
     return sum;
@@ -235,12 +287,14 @@ function getNextGeneration() {
 
     for (let row = 0; row < grid.length; row++) {
         for (let col = 0; col < grid[0].length; col++) {
-            if(grid[row][col]){
+            if (grid[row][col]) {
                 let alive = grid[row][col].state
-                let neighbors = countNeighbors(row, col);
+                let neighborCells = getNeighbors(row, col);
+                let neighbors = neighborCells.length;
 
                 if (alive == 0 && (neighbors >= 3 && neighbors <= 3)) {
                     nextGrid[row][col].state = 1;
+                    nextGrid[row][col].color = getNextColor(neighborCells);
                 } else if (alive == 1 && (neighbors < 2 || neighbors > 3)) {
                     nextGrid[row][col].state = 0;
                 } else {
@@ -258,6 +312,16 @@ function toggleCell(x, y) {
     // let col = floor((x + xOffset)/sideLength);
     // let row = floor((y + yOffset)/sideLength);
     // grid[row][col] = int(!grid[row][col]);
+}
+
+
+function getNextColor(neighbors) {
+    let angles = [];
+    for (let i = 0; i < neighbors.length; i++) {
+        angles.push(getAngle(neighbors[i].color));
+    }
+
+    return getColorFromAngle(angleAverage(angles))
 }
 
 
@@ -302,3 +366,50 @@ document.addEventListener("keydown", function (event) {
 document.addEventListener("mousedown", function (e) {
     toggleCell(e.clientX, e.clientY);
 });
+
+
+
+//Color Functions ---------------------------------------------------
+function getAngle(c) {
+    let y = (Math.sin(0) * c.levels[0] + Math.sin(Math.PI * 2 / 3) * c.levels[1] + Math.sin(Math.PI * 4 / 3) * c.levels[2]) / 3;
+    let x = (Math.cos(0) * c.levels[0] + Math.cos(Math.PI * 2 / 3) * c.levels[1] + Math.cos(Math.PI * 4 / 3) * c.levels[2]) / 3;
+    return Math.atan2(y, x);
+}
+
+function angleAverage(angles = []) {
+    let x = 0;
+    let y = 0;
+    for (let i = 0; i < angles.length; i++) {
+        x += Math.cos(angles[i]);
+        y += Math.sin(angles[i]);
+    }
+    if (angles.length) {
+        x = x / angles.length;
+        y = y / angles.length;
+    }
+
+    return Math.atan2(y, x);
+}
+
+function sinx(x, n = 2 * Math.PI) {
+    x = (x + n) % n;
+    if (x < n / 6) {
+        return x / (n / 6);
+
+    } else if (x >= n / 6 && x <= n / 2) {
+        return 1;
+
+    } else if (x > n / 2 && x <= 2 * n / 3) {
+        return -(x / (n / 6)) + 4
+
+    } else {
+        return 0;
+    }
+}
+
+function getColorFromAngle(angle) {
+    let r = Math.round(255 * sinx(angle + (2 * Math.PI / 3)));
+    let g = Math.round(255 * sinx(angle));
+    let b = Math.round(255 * sinx(angle + (4 * Math.PI / 3)));
+    return color(r, g, b);
+}
