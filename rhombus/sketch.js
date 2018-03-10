@@ -6,6 +6,7 @@ let colOffset;
 let grid = [[]];
 let sideLength = 20;
 let running = true;
+let colorize = false;
 
 function setup() {
     initializeGrid();
@@ -127,6 +128,7 @@ function drawCell(row, col, live = false, fillColor = color(255)) {
     strokeWeight(2);
     noFill();
 
+    if(!colorize) fillColor = color(255);
     if (live) fill(fillColor);
     drawRhombus(row, col);
 }
@@ -343,7 +345,7 @@ document.addEventListener("wheel", function (e) {
 });
 
 document.addEventListener("keydown", function (event) {
-    // console.log(event.which);
+    console.log(event.which);
     switch (event.which) {
         case 32: //space
             running = !running;
@@ -360,6 +362,10 @@ document.addEventListener("keydown", function (event) {
 
         case 39: //right arrow
             getNextGeneration();
+            break;
+
+        case 70: //f
+            colorize = !colorize;
             break;
     }
 });
