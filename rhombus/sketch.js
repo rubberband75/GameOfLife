@@ -6,7 +6,7 @@ let colOffset;
 let grid = [[]];
 let sideLength = 20;
 let running = true;
-let colorize = false;
+let colorize = true;
 
 function setup() {
     initializeGrid();
@@ -238,8 +238,8 @@ function getNeighbors(row, col) {
         if (getState(row + 1, col + 1)) sum.push(grid[row + 1][col + 1]);
         if (getState(row + 1, col + 3)) sum.push(grid[row + 1][col + 3]);
 
-        // if(getState(row + 0, col - 4) sum.push(grid[row + 0][col - 4]);
-        // if(getState(row + 0, col + 4) sum.push(grid[row + 0][col + 4]);
+        if(getState(row + 0, col - 4)) sum.push(grid[row + 0][col - 4]);
+        if(getState(row + 0, col + 4)) sum.push(grid[row + 0][col + 4]);
     }
 
     if (grid[row][col].dir == 2) {
@@ -253,8 +253,8 @@ function getNeighbors(row, col) {
         if (getState(row + 1, col - 1)) sum.push(grid[row + 1][col - 1]);
         if (getState(row + 2, col + 0)) sum.push(grid[row + 2][col + 0]);
 
-        // if(getState(row - 2, col - 2)) sum.push(grid[row - 2][col - 2]);
-        // if(getState(row + 2, col + 2)) sum.push(grid[row + 2][col + 2]);
+        if(getState(row - 2, col - 2)) sum.push(grid[row - 2][col - 2]);
+        if(getState(row + 2, col + 2)) sum.push(grid[row + 2][col + 2]);
     }
 
     if (grid[row][col].dir == 3) {
@@ -268,8 +268,8 @@ function getNeighbors(row, col) {
         if (getState(row + 0, col + 2)) sum.push(grid[row + 0][col + 2]);
         if (getState(row - 1, col + 3)) sum.push(grid[row - 1][col + 3]);
 
-        // if(getState(row + 2, col - 2)) sum.push(grid[row + 2][col - 2]);
-        // if(getState(row - 2, col + 2)) sum.push(grid[row - 2][col + 2]);
+        if(getState(row + 2, col - 2)) sum.push(grid[row + 2][col - 2]);
+        if(getState(row - 2, col + 2)) sum.push(grid[row - 2][col + 2]);
     }
 
     return sum;
@@ -415,13 +415,13 @@ function colorCos(x, n = 2 * Math.PI) {
 }
 
 function getColorFromAngle(angle) {
-    let r = Math.round(255 * colorCos(angle));
-    let g = Math.round(255 * colorCos(angle + (4 * Math.PI / 3)));
-    let b = Math.round(255 * colorCos(angle + (2 * Math.PI / 3)));
+    // let r = Math.round(255 * colorCos(angle));
+    // let g = Math.round(255 * colorCos(angle + (4 * Math.PI / 3)));
+    // let b = Math.round(255 * colorCos(angle + (2 * Math.PI / 3)));
 
-    // let r = Math.round(255 * (Math.cos(angle) + 1) / 2 );
-    // let g = Math.round(255 * (Math.cos(angle + (4 * Math.PI / 3)) + 1) / 2);
-    // let b = Math.round(255 * (Math.cos(angle + (2 * Math.PI / 3)) + 1) / 2);
+    let r = Math.round(255 * (Math.cos(angle) + 1) / 2 );
+    let g = Math.round(255 * (Math.cos(angle + (4 * Math.PI / 3)) + 1) / 2);
+    let b = Math.round(255 * (Math.cos(angle + (2 * Math.PI / 3)) + 1) / 2);
     return color(r, g, b);
 }
 
