@@ -46,8 +46,8 @@ function initializeGrid() {
             let cellDir = getDirection(row - rowOffset, col - colOffset);
 
             // let fillColor = getColor(cellDir);
-            let fillColor = getColor2(row - rowOffset, col - colOffset);
-            // let fillColor = getRandomColor();
+            // let fillColor = getColor2(row - rowOffset, col - colOffset);
+            let fillColor = getRandomColor();
 
             if (cellDir) { grid[row][col] = { state: 0, dir: cellDir, color: fillColor }; }
 
