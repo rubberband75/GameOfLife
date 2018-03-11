@@ -107,6 +107,11 @@
                     x = x / angles.length;
                     y = y / angles.length;
                 }
+                
+                if(x < 1e-4 && y < 1e-4){
+                    x += Math.random() / 100 * (Math.random() > 0.5 ? -1 : 1)
+                    y += Math.random() / 100 * (Math.random() > 0.5 ? -1 : 1)
+                }
 
                 return Math.atan2(y, x);
             }
@@ -163,7 +168,6 @@
                 c2.innerText = check2.checked ? getHex(color2) : ""
                 c3.innerText = getHex(color3)
             }
-
 
         </script>
 

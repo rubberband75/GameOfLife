@@ -44,8 +44,11 @@ function initializeGrid() {
         for (let col = 0; col < grid[0].length; col++) {
 
             let cellDir = getDirection(row - rowOffset, col - colOffset);
-            let fillColor = getColor(cellDir);
+
+            // let fillColor = getColor(cellDir);
+            let fillColor = getColor2(row - rowOffset, col - colOffset);
             // let fillColor = getRandomColor();
+
             if (cellDir) { grid[row][col] = { state: 0, dir: cellDir, color: fillColor }; }
 
         }
@@ -79,6 +82,12 @@ function getColor(dir) {
     if (dir == 2) return color(0, 255, 0);
     if (dir == 3) return color(0, 0, 255);
     return color(255);
+}
+
+function getColor2(row, col) {
+    let a = 0;
+    if (col > 0) return getColorFromAngle(a);
+    else return getColorFromAngle(a + Math.PI);
 }
 
 function drawRhombus(row, col) {
@@ -393,6 +402,13 @@ function angleAverage(angles = []) {
     if (angles.length) {
         x = x / angles.length;
         y = y / angles.length;
+    }
+                
+    //rounding errors caus a bias towards cyan whn the colors are nearly evenly spaced, and the average is 0
+    //this attempts to correct that bias.
+    if(x < 1e-4 && y < 1e-4){
+        x += Math.random() / 100 * (Math.random() > 0.5 ? -1 : 1)
+        y += Math.random() / 100 * (Math.random() > 0.5 ? -1 : 1)
     }
 
     return Math.atan2(y, x);
