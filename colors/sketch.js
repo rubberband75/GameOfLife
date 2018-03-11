@@ -45,8 +45,9 @@ function draw() {
 
 }
 
-function sinx(x, n = 2*PI) {
-    x = x % n;
+
+function colorCos(x, n = 2*PI) {
+    x = (x + (2*PI/3)) % n;
     if (x < n / 6) {
         return x / (n / 6);
 
@@ -69,9 +70,9 @@ setInterval(function () {
     g = 255 * (cos(a + (4 * PI / 3)) + 1) / 2;
     b = 255 * (cos(a + (2 * PI / 3)) + 1) / 2;
 
-    r2 = 255 * sinx(a + (2 * PI / 3));
-    g2 = 255 * sinx(a);
-    b2 = 255 * sinx(a + (4 * PI / 3));
+    r2 = 255 * colorCos(a);
+    g2 = 255 * colorCos(a + (4 * PI / 3));
+    b2 = 255 * colorCos(a + (2 * PI / 3));
 
 }, 100);
 

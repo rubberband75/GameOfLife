@@ -398,8 +398,8 @@ function angleAverage(angles = []) {
     return Math.atan2(y, x);
 }
 
-function sinx(x, n = 2 * Math.PI) {
-    x = (x + n) % n;
+function colorCos(x, n = 2 * Math.PI) {
+    x = (x + (2 * Math.PI / 3)) % n;
     if (x < n / 6) {
         return x / (n / 6);
 
@@ -415,9 +415,13 @@ function sinx(x, n = 2 * Math.PI) {
 }
 
 function getColorFromAngle(angle) {
-    let r = Math.round(255 * sinx(angle + (2 * Math.PI / 3)));
-    let g = Math.round(255 * sinx(angle));
-    let b = Math.round(255 * sinx(angle + (4 * Math.PI / 3)));
+    let r = Math.round(255 * colorCos(angle));
+    let g = Math.round(255 * colorCos(angle + (4 * Math.PI / 3)));
+    let b = Math.round(255 * colorCos(angle + (2 * Math.PI / 3)));
+
+    // let r = Math.round(255 * (Math.cos(angle) + 1) / 2 );
+    // let g = Math.round(255 * (Math.cos(angle + (4 * Math.PI / 3)) + 1) / 2);
+    // let b = Math.round(255 * (Math.cos(angle + (2 * Math.PI / 3)) + 1) / 2);
     return color(r, g, b);
 }
 
