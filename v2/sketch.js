@@ -2,6 +2,7 @@
 let grid = [[]];
 let sideLength = 60;
 let running = false;
+let colorize = true;
 
 function setup() {
     initializeGrid();
@@ -35,13 +36,21 @@ function initializeGrid() {
 
     grid = make2dArray(gridHeight, gridWidth);
 
+    for (let row = 0; row < grid.length; row++) {
+        for (let col = 0; col < grid[0].length; col++) {
+
+            grid[row][col] = { state: 0, color: getRandomColor() };
+
+        }
+    }
+
     drawGrid();
 
 }
 
 
 
-function drawCell(row, col, live = false) {
+function drawCell(row, col, live = false, fillColor = color(255)) {
     let x = col * sideLength;
     let y = row * sideLength;
 
@@ -49,7 +58,8 @@ function drawCell(row, col, live = false) {
     strokeWeight(2);
     noFill();
 
-    if (live) fill(255);
+    if(!colorize) fillColor = color(255);
+    if (live) fill(fillColor);
     rect(col * sideLength, row * sideLength, sideLength, sideLength);
 }
 
@@ -60,7 +70,7 @@ function drawGrid() {
 
     for (let row = 0; row < grid.length; row++) {
         for (let col = 0; col < grid[0].length; col++) {
-            drawCell(row, col, grid[row][col]);
+            drawCell(row, col, grid[row][col].state, grid[row][col].color);
         }
     }
 
@@ -70,7 +80,9 @@ function randomize() {
     initializeGrid();
     for (let row = 0; row < grid.length; row++) {
         for (let col = 0; col < grid[0].length; col++) {
-            grid[row][col] = int(random(1) >= 0.7);
+            if (grid[row][col]) {
+                grid[row][col].state = int(random(1) >= 0.7);
+            }
         }
     }
 }
@@ -78,7 +90,7 @@ function randomize() {
 
 function getState(row, col) {
     if (row >= 0 && row < grid.length && col >= 0 && col < grid[0].length) {
-        return grid[row][col];
+        return grid[row][col].state;
     }
     else return 0;
 }
@@ -95,21 +107,47 @@ function countNeighbors(row, col) {
     return sum;
 }
 
+function getNeighbors(row, col) {
+    if (grid[row][col] == null) return [];
+
+    neighbors = [];
+    for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+            if (!(i == 0 && j == 0)) {
+                if(getState(row + i, col + j)) neighbors.push(grid[row + i][col + j]);
+            }
+        }
+    }
+
+    return neighbors;
+}
+
 function getNextGeneration() {
     let nextGrid = make2dArray(grid.length, grid[0].length);
 
     for (let row = 0; row < grid.length; row++) {
         for (let col = 0; col < grid[0].length; col++) {
 
-            let alive = grid[row][col]
-            let neighbors = countNeighbors(row, col);
+            let fillColor = grid[row][col] ? grid[row][col].color : color(255);
+            nextGrid[row][col] = { state: 0, color: fillColor };
+
+        }
+    }
+
+    for (let row = 0; row < grid.length; row++) {
+        for (let col = 0; col < grid[0].length; col++) {
+
+            let alive = grid[row][col].state
+            let neighborCells = getNeighbors(row, col);
+            let neighbors = neighborCells.length;
 
             if (alive == 0 && neighbors == 3) {
-                nextGrid[row][col] = 1;
+                nextGrid[row][col].state = 1;
+                nextGrid[row][col].color = getNextColor(neighborCells);
             } else if (alive == 1 && (neighbors < 2 || neighbors > 3)) {
-                nextGrid[row][col] = 0;
+                nextGrid[row][col].state = 0;
             } else {
-                nextGrid[row][col] = grid[row][col];
+                nextGrid[row][col].state = grid[row][col].state;
             }
             
         }
@@ -122,15 +160,22 @@ function getNextGeneration() {
 function toggleCell(x, y){
     let col = floor((x + xOffset)/sideLength);
     let row = floor((y + yOffset)/sideLength);
-    grid[row][col] = int(!grid[row][col]);
+    grid[row][col].state = int(!grid[row][col].state);
 }
 
+function getNextColor(neighbors) {
+    let angles = [];
+    for (let i = 0; i < neighbors.length; i++) {
+        angles.push(getAngle(neighbors[i].color));
+    }
 
+    return getColorFromAngle(angleAverage(angles))
+}
 
 
 let canvas = document.getElementById('defaultCanvas0');
 
-document.addEventListener("resize", function () {
+window.addEventListener("resize", function () {
     initializeGrid();
 });
 
