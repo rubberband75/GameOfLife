@@ -7,6 +7,7 @@ let grid = [[]];
 let sideLength = 20;
 let running = true;
 let colorize = true;
+let allOn = false;
 
 function setup() {
     initializeGrid();
@@ -139,6 +140,7 @@ function drawCell(row, col, live = false, fillColor = color(255)) {
 
     if(!colorize) fillColor = color(255);
     if (live) fill(fillColor);
+    if (allOn) fill(fillColor);
     drawRhombus(row, col);
 }
 
@@ -303,6 +305,7 @@ function getNextGeneration() {
                 let alive = grid[row][col].state
                 let neighborCells = getNeighbors(row, col);
                 let neighbors = neighborCells.length;
+                neighborCells.push(grid[row][col])
 
                 if (alive == 0 && (neighbors >= 3 && neighbors <= 3)) {
                     nextGrid[row][col].state = 1;
@@ -375,6 +378,10 @@ document.addEventListener("keydown", function (event) {
 
         case 70: //f
             colorize = !colorize;
+            break;
+
+        case 65: //a
+            allOn = !allOn;
             break;
     }
 });

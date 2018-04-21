@@ -3,6 +3,7 @@ let grid = [[]];
 let sideLength = 60;
 let running = false;
 let colorize = true;
+let allOn = false;
 
 function setup() {
     initializeGrid();
@@ -60,6 +61,7 @@ function drawCell(row, col, live = false, fillColor = color(255)) {
 
     if(!colorize) fillColor = color(255);
     if (live) fill(fillColor);
+    if (allOn) fill(fillColor);
     rect(col * sideLength, row * sideLength, sideLength, sideLength);
 }
 
@@ -206,6 +208,14 @@ document.addEventListener("keydown", function (event) {
 
         case 39: //right arrow
             getNextGeneration();
+            break;
+
+        case 70: //f
+            colorize = !colorize;
+            break;
+
+        case 65: //a
+            allOn = !allOn;
             break;
     }
 });
