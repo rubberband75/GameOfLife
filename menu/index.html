@@ -1,0 +1,127 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script language="javascript" type="text/javascript" src="../libraries/p5.js"></script>
+  <script language="javascript" src="../libraries/p5.dom.js"></script>
+
+  <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+  <title>Game of Life</title>
+
+  <style>
+    #sketch-wrapper {
+      width: 100%;
+      z-index: -1;
+    }
+
+    #sketch-holder {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: row;
+      max-height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar-wrapper {
+      z-index: 1;
+      width: 200px;
+      margin-left: -200px;
+      position: relative;
+      background-color: #222;
+    }
+
+    #menu-btn {
+      width: 50px;
+      height: 50px;
+      background: none;
+      border: none;
+      background-color: #fff8;
+      position: absolute;
+      right: -50px;
+      font-size: 1.5em;
+    }
+
+    .sidebar {
+      width: 200px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar button {
+
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      margin: 5px 0;
+      background-color: #5f92b7;
+      padding: 10px
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar-wrapper">
+    <button id="menu-btn" class="btn">☰</button>
+
+    <div class="sidebar" id="mySidebar">
+      <button id="menu-close-btn" class="btn">Close &times;</button>
+      <br>
+      <button onclick="running = !running;">Play / Pause</button>
+      <button onclick="getNextGeneration();">Step</button>
+      <br>
+      <button onclick="randomize();">Randomize</button>
+      <button onclick="initializeGrid();">Clear</button>
+      <br>
+      <button onclick="colorize = !colorize;">Color On / Off</button>
+      <button onclick="allOn = !allOn">All On</button>
+      <br>
+      <button onclick="if (sideLength > 10) sideLength -= 5;initializeGrid();">Zoom In</button>
+      <button onclick="sideLength += 5;initializeGrid();">Zoom Out</button>
+      
+    </div>
+  </div>
+
+  <div id="sketch-wrapper">
+    <div id="sketch-holder"> </div>
+  </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script language="javascript" type="text/javascript" src="../libraries/colorMixer.js"></script>
+  <script language="javascript" type="text/javascript" src="sketch.js"></script>
+
+  <script>
+
+    document.addEventListener('touchend', function (e) {
+      e.target.click();
+      toggleCell(e.clientX - $("#sketch-holder").offset().left , e.clientY - $("#sketch-holder").offset().top);
+    });
+
+
+    $("#menu-btn").click(function () {
+      $(".sidebar-wrapper").animate({
+        marginLeft: '0px'
+      }, 600, function () {
+        $("#menu-btn").fadeOut();
+      });
+    });
+
+    $("#menu-close-btn").click(function () {
+
+      $("#menu-btn").fadeIn();
+      $(".sidebar-wrapper").animate({
+        marginLeft: '-200px'
+      }, 600, function () { });
+    })
+  </script>
+</body>
+
+</html>
