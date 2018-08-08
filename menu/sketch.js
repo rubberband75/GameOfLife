@@ -1,6 +1,6 @@
 
 let grid = [[]];
-let sideLength = 60;
+let sideLength = 30;
 let running = false;
 let colorize = true;
 let allOn = false;
@@ -224,7 +224,11 @@ document.addEventListener("keydown", function (event) {
 });
 
 document.addEventListener("mousedown", function(e) {
-    toggleCell(e.clientX - $("#sketch-holder").offset().left , e.clientY - $("#sketch-holder").offset().top);
+    try {
+        toggleCell(e.clientX - $("#sketch-holder").offset().left , e.clientY - $("#sketch-holder").offset().top);        
+    } catch (error) {
+        //
+    }
 });
 
 
