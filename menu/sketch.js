@@ -1,6 +1,6 @@
 
 let grid = [[]];
-let sideLength = 30;
+let sideLength = 25;
 let running = false;
 let colorize = true;
 let allOn = false;
