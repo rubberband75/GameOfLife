@@ -204,7 +204,8 @@ document.addEventListener("keydown", function (event) {
     // console.log(event.which);
     switch (event.which) {
         case 32: //space
-            running = !running;
+            // running = !running;
+            $("#play-btn").click();
             break;
 
         case 82: //r
