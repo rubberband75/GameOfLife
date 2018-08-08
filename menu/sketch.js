@@ -5,6 +5,13 @@ let running = false;
 let colorize = true;
 let allOn = false;
 
+settings = {
+    randomDensity: 30,
+    spawnMin: 3,
+    spawnMax: 3,
+    killMin: 2,
+    killMax: 3,
+}
 
 
 function setup() {
@@ -86,7 +93,7 @@ function randomize() {
     for (let row = 0; row < grid.length; row++) {
         for (let col = 0; col < grid[0].length; col++) {
             if (grid[row][col]) {
-                grid[row][col].state = int(random(1) >= 0.7);
+                grid[row][col].state = int(random(1) <= settings.randomDensity / 100.0);
             }
         }
     }
@@ -146,10 +153,10 @@ function getNextGeneration() {
             let neighborCells = getNeighbors(row, col);
             let neighbors = neighborCells.length;
 
-            if (alive == 0 && neighbors == 3) {
+            if (alive == 0 && (neighbors >= settings.spawnMin && neighbors <= settings.spawnMax)) {
                 nextGrid[row][col].state = 1;
                 nextGrid[row][col].color = getNextColor(neighborCells);
-            } else if (alive == 1 && (neighbors < 2 || neighbors > 3)) {
+            } else if (alive == 1 && (neighbors < settings.killMin || neighbors > settings.killMax)) {
                 nextGrid[row][col].state = 0;
             } else {
                 nextGrid[row][col].state = grid[row][col].state;

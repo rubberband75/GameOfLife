@@ -49,6 +49,7 @@
       right: -50px;
       font-size: 1.5em;
       cursor: pointer;
+      border-bottom-right-radius: 3px;
     }
 
     .sidebar {
@@ -69,7 +70,12 @@
       cursor: pointer;
 
       color: #ccc;
-      background-color: #444
+      background-color: #444;
+      transition: all ease-in-out 200ms;
+    }
+
+    .sidebar button:hover {
+      background-color: #555;
     }
 
 
@@ -78,6 +84,23 @@
       margin-left: auto;
       background: none;
       color: #ccc;
+    }
+
+    #settings {
+      color: #ccc;
+      font-family: sans-serif;
+    }
+
+    #settings input {
+      color: #ccc;
+      font-family: sans-serif;
+      background: none;
+      border: none;
+      border-bottom: 2px solid #ccc;
+      display: inline-block;
+      width: 25%;
+      text-align: center;
+      font-size: 1rem;
     }
   </style>
 </head>
@@ -88,14 +111,16 @@
     <button id="menu-btn" class="btn">☰</button>
 
     <div class="sidebar" id="mySidebar">
-      <button id="menu-close-btn" class="btn"><i class="fas fa-times"></i></button>
+      <button id="menu-close-btn" class="btn">
+        <i class="fas fa-times"></i>
+      </button>
       <!-- <br> -->
       <button id="play-btn">Play / Pause
         <i class="fas fa-pause"></i>
 
       </button>
       <button onclick="running=false; getNextGeneration();">Step
-        
+
         <i class="fas fa-step-forward"></i>
       </button>
       <br>
@@ -119,6 +144,30 @@
       <button onclick="sideLength += 5;initializeGrid();">Zoom In
         <i class="fas fa-search-plus"></i>
       </button>
+      <br>
+      <button onclick="$('#settings').toggle();">Settings
+        <i class="fas fa-sliders-h"></i>
+      </button>
+      <div id="settings" style="display: none;">
+        <p>Ramdom Density:
+          <input type="number" id="random-density-input">% </p>
+
+        <p style="text-decoration: underline">Spawn New Cells:</p>
+        <span>Neighbors:
+          <input type="number" id="spawn-min"> -
+          <input type="number" id="spawn-max">
+        </span>
+
+        <p style="text-decoration: underline">Kill Cells:</p>
+        <span>Neighbors
+          < <input type="number" id="kill-min">
+        </span>
+
+        <span>Neighbors >
+          <input type="number" id="kill-max">
+        </span>
+
+      </div>
 
     </div>
   </div>
@@ -140,7 +189,6 @@
       toggleCell(e.clientX - $("#sketch-holder").offset().left, e.clientY - $("#sketch-holder").offset().top);
     });
 
-
     $("#menu-btn").click(function () {
       $(".sidebar-wrapper").animate({
         marginLeft: '0px'
@@ -157,25 +205,53 @@
       }, 600, function () { });
     })
 
-    $(document).ready(function () {
-      $("#menu-btn").click();
-      running = true;
-    })
-
     $("#play-btn").click(function () {
       running = !running;
-
       if (running) {
         $($(this).children()[0]).removeClass("fa-play");
         $($(this).children()[0]).addClass("fa-pause");
-
       } else {
         $($(this).children()[0]).removeClass("fa-pause");
         $($(this).children()[0]).addClass("fa-play");
-
       }
+    })
+
+    $(document).ready(function () {
+      $("#menu-btn").click();
+      running = true;
+
+      $("#random-density-input").val(settings.randomDensity)
+      $("#random-density-input").change(function () {
+        settings.randomDensity = $(this).val()
+      })
+
+
+      $("#spawn-min").val(settings.spawnMin)
+      $("#spawn-min").change(function () {
+        settings.spawnMin = $(this).val()
+      })
+
+
+      $("#spawn-max").val(settings.spawnMax)
+      $("#spawn-max").change(function () {
+        settings.spawnMax = $(this).val()
+      })
+
+
+      $("#kill-min").val(settings.killMin)
+      $("#kill-min").change(function () {
+        settings.killMin = $(this).val()
+      })
+
+
+      $("#kill-max").val(settings.killMax)
+      $("#kill-max").change(function () {
+        settings.killMax = $(this).val()
+      })
+
 
     })
+
 
   </script>
 </body>
