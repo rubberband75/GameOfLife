@@ -1,0 +1,259 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script language="javascript" type="text/javascript" src="../libraries/p5.js"></script>
+  <script language="javascript" src="../libraries/p5.dom.js"></script>
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+    crossorigin="anonymous">
+
+  <!-- <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+  <title>Game of Life</title>
+
+  <style>
+    #sketch-wrapper {
+      width: 100%;
+      z-index: -1;
+    }
+
+    #sketch-holder {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: row;
+      max-height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar-wrapper {
+      z-index: 1;
+      width: 200px;
+      margin-left: -200px;
+      position: relative;
+      background-color: #222;
+    }
+
+    #menu-btn {
+      width: 50px;
+      height: 50px;
+      background: none;
+      border: none;
+      background-color: #fff8;
+      position: absolute;
+      right: -50px;
+      font-size: 1.5em;
+      cursor: pointer;
+      border-bottom-right-radius: 3px;
+    }
+
+    .sidebar {
+      width: 200px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar button {
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      margin: 5px 0;
+      background-color: #5f92b7;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+
+      color: #ccc;
+      background-color: #444;
+      transition: all ease-in-out 200ms;
+    }
+
+    .sidebar button:hover {
+      background-color: #555;
+    }
+
+
+    .sidebar button:first-child {
+      /* margin-top: 0; */
+      margin-left: auto;
+      background: none;
+      color: #ccc;
+    }
+
+    #settings {
+      color: #ccc;
+      font-family: sans-serif;
+    }
+
+    #settings input {
+      color: #ccc;
+      font-family: sans-serif;
+      background: none;
+      border: none;
+      border-bottom: 2px solid #ccc;
+      display: inline-block;
+      width: 25%;
+      text-align: center;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar-wrapper">
+    <button id="menu-btn" class="btn">☰</button>
+
+    <div class="sidebar" id="mySidebar">
+      <button id="menu-close-btn" class="btn">
+        <i class="fas fa-times"></i>
+      </button>
+      <!-- <br> -->
+      <button id="play-btn">Play / Pause
+        <i class="fas fa-pause"></i>
+
+      </button>
+      <button onclick="running=false; getNextGeneration();">Step
+
+        <i class="fas fa-step-forward"></i>
+      </button>
+      <br>
+      <button onclick="randomize();">Randomize
+        <i class="fas fa-random"></i>
+      </button>
+      <button onclick="running=false; initializeGrid();">Clear
+        <i class="fas fa-sync-alt"></i>
+      </button>
+      <br>
+      <button onclick="colorize = !colorize;">Color
+        <i class="fas fa-palette"></i>
+      </button>
+      <button onclick="allOn = !allOn">All On
+        <i class="fas fa-th"></i>
+      </button>
+      <br>
+      <button onclick="if (sideLength > 10) sideLength -= 5;initializeGrid();">Zoom Out
+        <i class="fas fa-search-minus"></i>
+      </button>
+      <button onclick="sideLength += 5;initializeGrid();">Zoom In
+        <i class="fas fa-search-plus"></i>
+      </button>
+      <br>
+      <button onclick="$('#settings').toggle();">Settings
+        <i class="fas fa-sliders-h"></i>
+      </button>
+      <div id="settings" style="display: none;">
+        <p>Ramdom Density:
+          <input type="number" id="random-density-input">% </p>
+
+        <p style="text-decoration: underline">Spawn New Cells:</p>
+        <span>Neighbors:
+          <input type="number" id="spawn-min"> -
+          <input type="number" id="spawn-max">
+        </span>
+
+        <p style="text-decoration: underline">Kill Cells:</p>
+        <span>Neighbors
+          < <input type="number" id="kill-min">
+        </span>
+
+        <span>Neighbors >
+          <input type="number" id="kill-max">
+        </span>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div id="sketch-wrapper">
+    <div id="sketch-holder"> </div>
+  </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script language="javascript" type="text/javascript" src="../libraries/colorMixer.js"></script>
+  <script language="javascript" type="text/javascript" src="sketch.js"></script>
+
+  <script>
+
+    document.addEventListener('touchend', function (e) {
+      e.target.click();
+      toggleCell(e.clientX - $("#sketch-holder").offset().left, e.clientY - $("#sketch-holder").offset().top);
+    });
+
+    $("#menu-btn").click(function () {
+      $(".sidebar-wrapper").animate({
+        marginLeft: '0px'
+      }, 600, function () {
+        $("#menu-btn").fadeOut();
+      });
+    });
+
+    $("#menu-close-btn").click(function () {
+
+      $("#menu-btn").fadeIn();
+      $(".sidebar-wrapper").animate({
+        marginLeft: '-200px'
+      }, 600, function () { });
+    })
+
+    $("#play-btn").click(function () {
+      running = !running;
+      if (running) {
+        $($(this).children()[0]).removeClass("fa-play");
+        $($(this).children()[0]).addClass("fa-pause");
+      } else {
+        $($(this).children()[0]).removeClass("fa-pause");
+        $($(this).children()[0]).addClass("fa-play");
+      }
+    })
+
+    $(document).ready(function () {
+      $("#menu-btn").click();
+      running = true;
+
+      $("#random-density-input").val(settings.randomDensity)
+      $("#random-density-input").change(function () {
+        settings.randomDensity = $(this).val()
+      })
+
+
+      $("#spawn-min").val(settings.spawnMin)
+      $("#spawn-min").change(function () {
+        settings.spawnMin = $(this).val()
+      })
+
+
+      $("#spawn-max").val(settings.spawnMax)
+      $("#spawn-max").change(function () {
+        settings.spawnMax = $(this).val()
+      })
+
+
+      $("#kill-min").val(settings.killMin)
+      $("#kill-min").change(function () {
+        settings.killMin = $(this).val()
+      })
+
+
+      $("#kill-max").val(settings.killMax)
+      $("#kill-max").change(function () {
+        settings.killMax = $(this).val()
+      })
+
+
+    })
+
+
+  </script>
+</body>
+
+</html>
