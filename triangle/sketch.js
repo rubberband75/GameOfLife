@@ -4,11 +4,14 @@ let cellHeight;
 
 let gridStrokeWeight = 2;
 
-let sideLength = 30.0;
+let sideLength = 230.0;
 let gridHeight;
 let gridWidth;
 
 let running = true;
+let colorize = true;
+let allOn = false;
+
 let drawUpdate;
 
 let grid;
@@ -35,7 +38,7 @@ function makeArray(rows, cols){
     return arr;
 }
 
-function drawTriangle(x, y, down = false, fillIn = false) {
+function drawTriangle(x, y, down = false, fillIn = false, fillColor = color(255)) {
     stroke(32);
     strokeWeight(gridStrokeWeight);
     noFill();
@@ -56,11 +59,17 @@ function drawTriangle(x, y, down = false, fillIn = false) {
     if (fillIn) {
         push()
         noStroke();
-        fill(fillIn);
+
+        fill(color(255));
+        if(!colorize) fillColor = color(255);
+        if (fillColor) fill(fillColor);
+        
         triangle(x1, y, x2, y2, x3, y)
         pop()
     }
 
+
+    if (allOn) fill(fillColor);
     triangle(x1, y, x2, y2, x3, y)
 }
 
@@ -81,7 +90,16 @@ function initializeGrid(){
     cellHeight = tHeight * sideLength;
     gridWidth = Math.ceil((window.innerWidth/2) / (sideLength/2))*2 + 1;
     gridHeight = Math.ceil((window.innerHeight/2) / cellHeight)*2;
+
     grid = makeArray(gridHeight, gridWidth);
+
+    for (let row = 0; row < grid.length; row++) {
+        for (let col = 0; col < grid[0].length; col++) {
+
+            grid[row][col] = { state: 0, color: getRandomColor() };
+
+        }
+    }
 
     drawGrid();
 }
@@ -107,10 +125,10 @@ function drawLivecells() {
     
     for (let row = 0; row < grid.length; row++) {
         for (let col = 0; col < grid[0].length; col++) {
-            if(grid[row][col]){
+            if(grid[row][col].state){
                 let x = (col - floor(grid[0].length / 2)) * sideLength / 2;
                 let y = (row - grid.length / 2) * cellHeight;
-                drawTriangle(x, y, getDir(row, col), color(255))
+                drawTriangle(x, y, getDir(row, col), grid[row][col].color)
             }
         }
     }
@@ -156,11 +174,12 @@ document.addEventListener("keydown", function (event) {
 
 function randomize() {
 
-    grid = makeArray(gridHeight, gridWidth);
+    // grid = makeArray(gridHeight, gridWidth);
+    initializeGrid()
 
     for (let row = 0; row < grid.length; row++) {
         for (let col = 0; col < grid[0].length; col++) {
-            grid[row][col] = int(random(1) >= 0.7);
+            grid[row][col].state = int(random(1) >= 0.7);
         }
     }
 }
@@ -232,15 +251,25 @@ function getNextGeneration(){
     for (let row = 0; row < grid.length; row++) {
         for (let col = 0; col < grid[0].length; col++) {
 
+            // let fillColor = grid[row][col] ? grid[row][col].color : color(255);
+            let fillColor = color(255, 0, 0);
+            nextGrid[row][col] = { state: 0, color: fillColor };
+
+        }
+    }
+
+    for (let row = 0; row < grid.length; row++) {
+        for (let col = 0; col < grid[0].length; col++) {
+
             let neighbors = countNeighbors(row, col);
-            let alive = grid[row][col];
+            let alive = grid[row][col].state;
 
             if (!alive && (neighbors >= 5 && neighbors <= 6)) {
-                nextGrid[row][col] = 1;
+                nextGrid[row][col].state = 1;
             } else if (alive && (neighbors < 4 || neighbors > 7)) {
-                nextGrid[row][col] = 0;
+                nextGrid[row][col].state = 0;
             } else if (alive) {
-                nextGrid[row][col] = grid[row][col];
+                nextGrid[row][col].state = grid[row][col].state;
             }
         }
     }
