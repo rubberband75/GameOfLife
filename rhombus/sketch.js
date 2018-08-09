@@ -305,7 +305,7 @@ function getNextGeneration() {
                 let alive = grid[row][col].state
                 let neighborCells = getNeighbors(row, col);
                 let neighbors = neighborCells.length;
-                neighborCells.push(grid[row][col])
+                // if (allOn) neighborCells.push(grid[row][col])
 
                 if (alive == 0 && (neighbors >= 3 && neighbors <= 3)) {
                     nextGrid[row][col].state = 1;
